@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+</head>
+<body>
+
+    <form id="userForm">
+        <input type="number" id="id" placeholder="ID" required>
+        <input type="text" id="first_name" placeholder="First Name" required>
+        <input type="text" id="last_name" placeholder="Last Name" required>
+        <input type="text" id="url" placeholder="URL" required>
+        <input type="number" id="age" placeholder="Age" required>
+        <button type="button" onclick="createUser()">Create User</button>
+    </form>
+    
+
+    <script>
+        async function createUser() {
+            const user = {
+                id: parseInt(document.getElementById('id').value),
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+                url: document.getElementById('url').value,
+                age: parseInt(document.getElementById('age').value)
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('Success:', data);
+            } catch (error) {
+                alert("Error: " + error.message);
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
